@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if [ ! -d "${QNX_TARGET}" ]; then
+    echo "QNX_TARGET is not set. Exiting..."
+    exit 1
+fi
+
+if [ ! -d "${QNX_STAGE}" ]; then
+    echo "QNX_STAGE is not set. Exiting..."
+    exit 1
+fi
+
 build(){
 
     if [ $ARCH == "x86_64" ]; then

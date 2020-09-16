@@ -7,3 +7,5 @@ Instructions to build libpng16 for QNX:
 3- merge files in this repo with extracted source code
 
 4- Run build.sh
+
+files will be installed in the staging directory
