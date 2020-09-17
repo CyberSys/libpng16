@@ -1,15 +1,5 @@
 #!/bin/bash
 
-if [ ! -d "${QNX_TARGET}" ]; then
-    echo "QNX_TARGET is not set. Exiting..."
-    exit 1
-fi
-
-if [ ! -d "${QNX_STAGE}" ]; then
-    echo "QNX_STAGE is not set. Exiting..."
-    exit 1
-fi
-
 build(){
 
     if [ $ARCH == "x86_64" ]; then
@@ -29,29 +19,47 @@ build(){
         exit 1
     fi
 
-OPT="$TARGET \
-	--prefix=$PWD/nto/$CPUVARDIR/o \
-	--includedir=$QNX_STAGE/usr/include \
-	--libdir=$QNX_STAGE/$CPUVARDIR/usr/lib \
-	--bindir=$QNX_STAGE/$CPUVARDIR/usr/bin \
-	--sbindir=$QNX_STAGE/$CPUVARDIR/usr/sbin \
-	--oldincludedir=$QNX_STAGE/usr/include \
-	--sysconfdir=$QNX_STAGE/$CPUVARDIR/usr/etc \
-	--datarootdir=$QNX_STAGE/$CPUVARDIR/usr/share"
+    OPT="$TARGET \
+        --prefix=$PWD/nto/$CPUVARDIR/o \
+        --includedir=$QNX_STAGE/usr/include \
+        --libdir=$QNX_STAGE/$CPUVARDIR/usr/lib \
+        --bindir=$QNX_STAGE/$CPUVARDIR/usr/bin \
+        --sbindir=$QNX_STAGE/$CPUVARDIR/usr/sbin \
+        --oldincludedir=$QNX_STAGE/usr/include \
+        --sysconfdir=$QNX_STAGE/$CPUVARDIR/usr/etc \
+        --datarootdir=$QNX_STAGE/$CPUVARDIR/usr/share"
 
-echo "---------------------------------------------------------------"
-echo "---------------------------------------------------------------"
-echo $OPT
-echo "---------------------------------------------------------------"
-echo "---------------------------------------------------------------"
+    echo "---------------------------------------------------------------"
+    echo "---------------------------------------------------------------"
+    echo $OPT
+    echo "---------------------------------------------------------------"
+    echo "---------------------------------------------------------------"
 
-./configure $OPT
+    ./configure $OPT
 
-make
-make install
+    make
+    make install
 
 }
 
+if [ ! -d "${QNX_TARGET}" ]; then
+    echo "QNX_TARGET is not set. Exiting..."
+    exit 1
+fi
+
+if [ ! -d "${QNX_STAGE}" ]; then
+    echo "QNX_STAGE is not set. Exiting..."
+    exit 1
+fi
+
+# Download
+wget https://sourceforge.net/projects/libpng/files/libpng16/1.6.37/libpng-1.6.37.tar.gz
+tar -C . -xzvf libpng-1.6.37.tar.gz
+rm -rf libpng-1.6.37.tar.gz
+mv libpng-1.6.37/* .
+rm -rf libpng-1.6.37
+
+# Build
 rm -rfv nto
 
 mkdir -p nto/x86_64/o
