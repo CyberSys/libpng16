@@ -38,9 +38,15 @@ build(){
     ./configure $OPT
 
     make
+    if [[ $? -ne 0 ]] ; then
+        exit 1
+    fi
+    
     make install
 
 }
+
+echo "Building libpng16..."
 
 if [ ! -d "${QNX_TARGET}" ]; then
     echo "QNX_TARGET is not set. Exiting..."
