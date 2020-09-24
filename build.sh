@@ -38,10 +38,6 @@ build(){
     ./configure $OPT
 
     make
-    if [[ $? -ne 0 ]] ; then
-        exit 1
-    fi
-    
     make install
 
 }
@@ -66,12 +62,6 @@ mv libpng-1.6.37/* .
 rm -rf libpng-1.6.37
 
 # Build
-rm -rfv nto
-
-mkdir -p nto/x86_64/o
-mkdir -p nto/aarch64le/o
-mkdir -p nto/armle-v7/o
-
 make clean
 ARCH=x86_64
 CPUVARDIR=$ARCH
